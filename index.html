@@ -18,14 +18,25 @@
     <button onclick="openImgClip()">Open</button>
     <button onclick="focusChildren()">Focus</button>
     <button onclick="closeChildren()">Close</button>
+    <input type="url" placeholder="Enter a valid img url..." onchange="changeImage(this.value)" name="img_url" autocomplete="url">
     <script>
         let children = [];
+        let imgUrl;
+        function changeImage(url) {
+            imgUrl = url.trim() || "./bg.jpg";
+            document.body.style.backgroundImage = `url(${imgUrl})`;
+            children.forEach(c => {
+                c.location.replace(`img_clip.html?${imgUrl}`);
+            });
+        }
+        changeImage('');
+
         function openImgClip() {
             const w = window.innerWidth * 0.2;
             const h = window.innerHeight * 0.2;
             const x = window.screenX + (window.innerWidth/2) - (w/2);
             const y = window.screenY + (window.innerHeight/2) - (h/2);
-            const child = window.open('img_clip.html', `clip${children.length}`, `resizable=no,toolbar=no,scrollbars=no,menubar=no,status=no,directories=no,height=${h},width=${w},left=${x},top=${y}`);
+            const child = window.open(`img_clip.html?${imgUrl}`, `clip${children.length}`, `resizable=no,toolbar=no,scrollbars=no,menubar=no,status=no,directories=no,height=${h},width=${w},left=${x},top=${y}`);
             children.push(child);
         }
         function focusChildren() {

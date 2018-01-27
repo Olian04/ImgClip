@@ -27,7 +27,7 @@
         const context = canvas.getContext('2d');
         
         const base_image = new Image();
-        base_image.src = "./bg.jpg";
+        base_image.src = window.location.search.slice(1);
         base_image.onload = updateClip;
 
         function updateClip() {
