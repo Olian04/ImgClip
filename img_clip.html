@@ -25,12 +25,14 @@
 
         const canvas = document.getElementById('c');
         const context = canvas.getContext('2d');
+        context.fillStyle = "black";
         
         const base_image = new Image();
         base_image.src = window.location.search.slice(1);
         base_image.onload = updateClip;
 
         function updateClip() {
+            context.fillRect(0, 0, canvas.width, canvas.height);
             context.drawImage(
                 base_image, 
                 window.screenX, 
