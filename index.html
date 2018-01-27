@@ -7,7 +7,6 @@
     <title>ImgClip</title>
     <style>
         body {
-            background-image: url("./bg.jpg");
             background-color: white;
             background-size: 100vw 100vh;
         }
@@ -24,18 +23,30 @@
     <button onclick="openImgClip()">Open</button>
     <button onclick="focusChildren()">Focus</button>
     <button onclick="closeChildren()">Close</button>
+    <button onclick="toggleBackground(this)">Hide background</button>
     <input type="url" placeholder="Enter a valid img url..." onchange="changeImage(this.value)" name="img_url" autocomplete="url">
     <script>
+        let showBackground = true;
+        function toggleBackground(b) {
+            showBackground = !showBackground;
+            b.innerHTML = showBackground ? "Hide background" : "Show background";
+            changeImage();
+        }
         let children = [];
         let imgUrl;
         function changeImage(url) {
-            imgUrl = url.trim() || "./bg.jpg";
-            document.body.style.backgroundImage = `url(${imgUrl})`;
+            imgUrl = (url !== undefined && url.trim()) || "./bg.jpg";
+            if (showBackground) {
+                document.body.style.backgroundImage = `url(${imgUrl})`;
+            } else {
+                console.log(showBackground);
+                document.body.style.backgroundImage = '';
+            }
             children.forEach(c => {
                 c.location.replace(`img_clip.html?${imgUrl}`);
             });
         }
-        changeImage('');
+        changeImage();
 
         function openImgClip() {
             const w = window.innerWidth * 0.2;
