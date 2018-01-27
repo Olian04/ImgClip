@@ -24,7 +24,7 @@
     <button onclick="focusChildren()">Focus</button>
     <button onclick="closeChildren()">Close</button>
     <button onclick="toggleBackground(this)">Hide background</button>
-    <input type="url" placeholder="Enter a valid img url..." onchange="changeImage(this.value)" name="img_url" autocomplete="url">
+    <input type="url" placeholder="Enter a valid img url..." onchange="changeUrl(this.value)" name="img_url" autocomplete="url">
     <script>
         let showBackground = true;
         function toggleBackground(b) {
@@ -34,8 +34,11 @@
         }
         let children = [];
         let imgUrl;
-        function changeImage(url) {
-            imgUrl = (url !== undefined && url.trim()) || "./bg.jpg";
+        function changeUrl(url) {
+            imgUrl = (url && url.trim()) || "./bg.jpg";
+            changeImage();
+        }
+        function changeImage() {
             if (showBackground) {
                 document.body.style.backgroundImage = `url(${imgUrl})`;
             } else {
@@ -46,7 +49,7 @@
                 c.location.replace(`img_clip.html?${imgUrl}`);
             });
         }
-        changeImage();
+        changeUrl();
 
         function openImgClip() {
             const w = window.innerWidth * 0.2;
