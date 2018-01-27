@@ -23,12 +23,27 @@
         window.statusbar.visible = false;
         window.menubar.visible = false;
 
+        const uuid = new Date().getTime();
+
         document.body.style.backgroundImage = `url(${window.location.search.slice(1)})`;
         document.body.style.backgroundSize = `${window.screen.width}px ${window.screen.height}px`;
         updateClip();
 
+        var updateToken = undefined;
         function updateClip() {
-            document.body.style.backgroundPosition = `${-window.screenX}px ${-window.screenY}px`;        
+            document.body.style.backgroundPosition = `${-window.screenX}px ${-window.screenY}px`; 
+            if(updateToken) clearTimeout(updateToken);
+            updateToken = setTimeout(() => {
+                window.opener.postMessage({
+                    id: 'clip',
+                    uuid: uuid,
+                    x: window.screenX,
+                    y: window.screenY,
+                    z: -1,
+                    w: window.outerWidth,
+                    h: window.outerHeight
+                }, '*');
+            }, 500);
         }
 
         (() => {
