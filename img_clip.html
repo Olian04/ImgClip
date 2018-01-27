@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Clip</title>
     <style>
-        body, #c {
+        body {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
             height: 100%;
@@ -17,36 +17,19 @@
     </style>
 </head>
 <body>
-    <canvas id="c"></canvas>
     <script>
+        // I have no idea if these actually work... don't think so...
         window.locationbar.visible = false;
         window.statusbar.visible = false;
         window.menubar.visible = false;
 
-        const canvas = document.getElementById('c');
-        const context = canvas.getContext('2d');
-        context.fillStyle = "black";
-        
-        const base_image = new Image();
-        base_image.src = window.location.search.slice(1);
-        base_image.onload = updateClip;
+        document.body.style.backgroundImage = `url(${window.location.search.slice(1)})`;
+        document.body.style.backgroundSize = `${window.screen.width}px ${window.screen.height}px`;
+        updateClip();
 
         function updateClip() {
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(
-                base_image, 
-                window.screenX, 
-                window.screenY,
-                window.innerWidth, 
-                window.innerHeight,
-                0, 
-                0,
-                canvas.width, 
-                canvas.height
-            );
+            document.body.style.backgroundPosition = `${-window.screenX}px ${-window.screenY}px`;        
         }
-
-        window.onresize = updateClip;
 
         (() => {
             let oldX = window.screenX;
