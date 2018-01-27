@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clip</title>
+    <style>
+        body, #c {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script>
+        window.locationbar.visible = false;
+        window.statusbar.visible = false;
+        window.menubar.visible = false;
+
+        const canvas = document.getElementById('c');
+        const context = canvas.getContext('2d');
+        
+        const base_image = new Image();
+        base_image.src = "./bg.jpg";
+        base_image.onload = updateClip;
+
+        function updateClip() {
+            context.drawImage(
+                base_image, 
+                window.screenX, 
+                window.screenY,
+                window.innerWidth, 
+                window.innerHeight,
+                0, 
+                0,
+                canvas.width, 
+                canvas.height
+            );
+        }
+
+        window.onresize = updateClip;
+
+        (() => {
+            let oldX = window.screenX;
+            let oldY = window.screenY;
+            setInterval(function(){
+                if(oldX !== window.screenX || oldY !== window.screenY){
+                    updateClip();
+                    oldX = window.screenX;
+                    oldY = window.screenY;
+                }
+            }, 0);
+        })();
+    </script>
+</body>
+</html>
